@@ -30,7 +30,7 @@ document.querySelectorAll(".noti-acc").forEach((ele) =>
     const id = e.target.closest(".noti-card").dataset.id;
     const status = 2;
     try {
-      const res = await axios.patch("http://localhost:5500/api/friend", {
+      const res = await axios.patch("/api/friend", {
         from: id,
         status,
       });
@@ -46,7 +46,7 @@ document.querySelectorAll(".noti-dec").forEach((ele) =>
     const id = e.target.closest(".noti-card").dataset.id;
     const status = 3;
     try {
-      const res = await axios.patch("http://localhost:5500/api/friend", {
+      const res = await axios.patch("/api/friend", {
         from: id,
         status,
       });
@@ -61,7 +61,7 @@ document.querySelectorAll(".noti-rem").forEach((ele) =>
   ele.addEventListener("click", async (e) => {
     const remId = e.target.closest(".noti-card").dataset.id;
     try {
-      const res = await axios.post("http://localhost:5500/api/friend/delete", {
+      const res = await axios.post("/api/friend/delete", {
         id: remId,
       });
       location.reload();
@@ -73,7 +73,7 @@ document.querySelectorAll(".noti-rem").forEach((ele) =>
 
 const logout = async () => {
   try {
-    const res = await axios.get("http://localhost:5500/api/users/logout");
+    const res = await axios.get("/api/users/logout");
     showAlert("Logged Out Successfully", true);
     console.log(res);
     if (res.data.status == "success") location.href = "/login";

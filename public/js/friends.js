@@ -28,7 +28,7 @@ document.querySelectorAll(".add").forEach((ele) =>
     const frdId = e.target.closest(".frd-card").dataset.user;
     console.log(frdId);
     try {
-      const res = await axios.post("http://localhost:5500/api/friend", {
+      const res = await axios.post("/api/friend", {
         to: frdId,
       });
       location.reload();
@@ -60,7 +60,7 @@ document.querySelectorAll(".card-acc").forEach((ele) =>
     const id = e.target.closest(".frd-card").dataset.user;
     const status = 2;
     try {
-      const res = await axios.patch("http://localhost:5500/api/friend", {
+      const res = await axios.patch("/api/friend", {
         from: id,
         status,
       });
@@ -77,7 +77,7 @@ document.querySelectorAll(".card-dec").forEach((ele) =>
     const id = e.target.closest(".frd-card").dataset.user;
     const status = 3;
     try {
-      const res = await axios.patch("http://localhost:5500/api/friend", {
+      const res = await axios.patch("/api/friend", {
         from: id,
         status,
       });
@@ -94,12 +94,9 @@ document.querySelectorAll(".unFriend").forEach((ele) =>
     const friend = e.target.closest(".frd-card").dataset.user;
     console.log("here");
     try {
-      const res = await axios.post(
-        "http://localhost:5500/api/friend/unfriend",
-        {
-          friend,
-        }
-      );
+      const res = await axios.post("/api/friend/unfriend", {
+        friend,
+      });
       location.reload();
     } catch (err) {
       showAlert("Something went wrong");

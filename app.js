@@ -5,6 +5,7 @@ const morgan = require("morgan");
 const userRouter = require("./routes/userRouter");
 const quizRouter = require("./routes/quizRouter");
 const friendRouter = require("./routes/friendRouter");
+const compression = require("compression");
 const viewRouter = require("./routes/viewRoutes");
 const errorHandler = require("./controllers/errorController");
 const cookieParser = require("cookie-parser");
@@ -18,6 +19,7 @@ if (process.env.NODE_ENV == "development") {
   app.use(morgan("dev"));
 }
 app.use(express.json({ limit: "10kb" }));
+app.use(compression());
 app.use("/", viewRouter);
 app.use("/api/users", userRouter);
 app.use("/api/quiz", quizRouter);

@@ -5,10 +5,7 @@ const modal = document.querySelector(".modal");
 
 const updateMe = async (data) => {
   try {
-    const res = await axios.patch(
-      "http://localhost:5500/api/users/updateMe",
-      data
-    );
+    const res = await axios.patch("/api/users/updateMe", data);
     if (res.data.status == "success") {
       location.reload();
     }

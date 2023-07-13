@@ -8,7 +8,7 @@ if (err) {
 
 const login = async (email, password) => {
   try {
-    const res = await axios.post("http://localhost:5500/api/users/login", {
+    const res = await axios.post("/api/users/login", {
       email,
       password,
     });

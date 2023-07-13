@@ -36,7 +36,7 @@ const createQuiz = async () => {
       // message.images.forEach((ele) => {
       //   formData.append("images", ele);
       // });
-      const res = await axios.post("http://localhost:5500/api/quiz", formData);
+      const res = await axios.post("/api/quiz", formData);
       location.href = "/";
     } else {
       showAlert(message);

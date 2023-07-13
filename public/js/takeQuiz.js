@@ -25,7 +25,7 @@ const nextChange = function (e) {
 
 const submitTest = async function (id) {
   try {
-    const res = await axios.post(`http://localhost:5500/api/quiz/${id}`, {
+    const res = await axios.post(`/api/quiz/${id}`, {
       answers,
     });
     showAlert(
