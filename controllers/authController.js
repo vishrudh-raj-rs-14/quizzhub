@@ -2,7 +2,9 @@ const User = require("../models/userModel");
 const catchAync = require("../utils/catchAync");
 const jwt = require("jsonwebtoken");
 const { token } = require("morgan");
+const qs = require("qs");
 const { promisify } = require("util");
+const axios = require("axios");
 const AppError = require("../utils/appError");
 
 const signToken = (id) => {
@@ -55,6 +57,10 @@ exports.login = catchAync(async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email }).select(
     "+password"
   );
+  if (user && (user.google || user.dauth)) {
+    return next(new AppError("You can't login this email directly", 401));
+  }
+
   if (!user || !(await user.checkPasswords(req.body.password, user.password))) {
     return next(new AppError("User name or Password Incorrect", 401));
   }
@@ -74,6 +80,141 @@ exports.login = catchAync(async (req, res, next) => {
       status: "success",
       token,
     });
+});
+
+exports.loginWithGoogle = catchAync(async (req, res, next) => {
+  const code = req.query.code;
+  const url = "https://oauth2.googleapis.com/token";
+
+  const values = {
+    code,
+    client_id: process.env.GOOGLE_CLIENT_ID,
+    client_secret: process.env.GOOGLE_CLIENT_SECRET,
+    redirect_uri: process.env.GOOGLE_OAUTH_REDIRECT_URL,
+    grant_type: "authorization_code",
+  };
+
+  const result = await axios.post(url, qs.stringify(values), {
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+  });
+  const { id_token, access_token } = result.data;
+
+  const googleUser = jwt.decode(id_token);
+  const user = await User.findOne({ email: googleUser.email });
+  if (!user) {
+    const myUser = {
+      firstName: googleUser.name.split(" ")[0],
+      lastName: googleUser.name.split(" ").slice(1).join(""),
+      email: googleUser.email,
+      profilePic: googleUser.picture,
+      google: true,
+    };
+    const curUser = new User(myUser);
+    curUser.save({ validateBeforeSave: false });
+    const token = signToken(curUser._id);
+    res
+      .cookie("jwt", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV == "production",
+      })
+      .status(200)
+      .redirect("/");
+  } else if (user.google) {
+    const token = signToken(user._id);
+    if (process.env.NODE_ENV == "production") {
+      user.password = undefined;
+    }
+    res
+      .cookie("jwt", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV == "production",
+      })
+      .status(200)
+      .redirect("/");
+  } else {
+    res.redirect(
+      "/login?e=' + encodeURIComponent('You can't Login this email through google')"
+    );
+  }
+
+  res.status(200).json({
+    status: "success",
+  });
+});
+exports.loginWithDelta = catchAync(async (req, res, next) => {
+  const code = req.query.code;
+  const url = "https://auth.delta.nitt.edu/api/oauth/token";
+
+  const values = {
+    code,
+    client_id: process.env.DELTA_CLIENT_ID,
+    client_secret: process.env.DELTA_CLIENT_SECRET,
+    redirect_uri: process.env.DELTA_OAUTH_REDIRECT_URL,
+    grant_type: "authorization_code",
+  };
+
+  const result = await axios.post(url, qs.stringify(values), {
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+  });
+  const { id_token, access_token, state } = result.data;
+
+  const deltaRes = await axios.post(
+    "https://auth.delta.nitt.edu/api/resources/user",
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    }
+  );
+
+  const deltaUser = deltaRes.data;
+
+  const user = await User.findOne({ email: deltaUser.email });
+  if (!user) {
+    const myUser = {
+      firstName: deltaUser.name.split(" ")[0],
+      lastName: deltaUser.name.split(" ").slice(1).join(""),
+      email: deltaUser.email,
+      dauth: true,
+    };
+    const curUser = await new User(myUser);
+    curUser.save({ validateBeforeSave: false });
+    const token = signToken(curUser._id);
+    res
+      .cookie("jwt", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV == "production",
+      })
+      .status(200)
+      .redirect("/");
+  } else if (user.dauth) {
+    const token = signToken(user._id);
+    if (process.env.NODE_ENV == "production") {
+      user.password = undefined;
+    }
+    res
+      .cookie("jwt", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV == "production",
+      })
+      .status(200)
+      .redirect("/");
+  } else {
+    res.redirect(
+      "/login?e=' + encodeURIComponent('You can't Login this email through delta')"
+    );
+  }
+  // const nitUser = jwt.decode(id_token);
+  // console.log(nitUser);
+
+  res.status(200).json({
+    status: "success",
+  });
 });
 
 exports.logout = catchAync(async (req, res, next) => {
@@ -107,7 +248,6 @@ exports.protect = catchAync(async (req, res, next) => {
       new AppError("The user with this credentials does not exist anymore", 401)
     );
   }
-  console.log(user);
   req.user = user;
   next();
 });
@@ -131,7 +271,6 @@ exports.isLoggedIn = catchAync(async (req, res, next) => {
   if (!user) {
     return next();
   }
-  console.log(user);
   req.isLoggedIn = true;
   res.locals.user = user;
   req.user = user;
@@ -143,7 +282,7 @@ exports.redirect = (req, res, next) => {
     next();
   } else {
     res.redirect(
-      "/login?e=' + encodeURIComponent('Incorrect username or password')"
+      "/login?e=' + encodeURIComponent('Login to access this page')"
     );
   }
 };

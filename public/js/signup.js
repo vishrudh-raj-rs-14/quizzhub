@@ -42,3 +42,13 @@ document.querySelector(".submit-normal").addEventListener("click", () => {
   const confirmPassword = document.querySelector(".inp-cpassword").value;
   signup(firstName, lastName, email, password, confirmPassword);
 });
+
+document.querySelector(".submit-google").addEventListener("click", () => {
+  const url = document.querySelector(".submit-google").dataset.url;
+  location.href = url;
+});
+
+document.querySelector(".submit-dauth").addEventListener("click", () => {
+  const url = document.querySelector(".submit-dauth").dataset.url;
+  location.href = url;
+});

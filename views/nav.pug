@@ -68,7 +68,11 @@ html(lang='en')
             if user.profilePic
               a(href="/profile")
                 .profile-pic-c
-                  img(src=`/img/users/${user.profilePic}`)
+                  -let cond=user.profilePic && user.profilePic.startsWith("http")
+                  if cond
+                    img(src=`${user.profilePic}`)
+                  else 
+                    img(src=`/img/users/${user.profilePic}`)
             else
               a(href="/profile")  
                 div(style=`background-color :${user.color} !important;`).profile= user.firstName[0].toUpperCase()

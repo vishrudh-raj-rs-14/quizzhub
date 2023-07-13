@@ -216,7 +216,12 @@ block cont
               if canEdit
                 div
                   i.fa-solid.fa-pen-to-square.fa-2x(style='color: #f5f5f5')
-              img(src=`/img/users/${curUser.profilePic}`)
+                -let cond=curUser.profilePic && curUser.profilePic.startsWith("http")
+                if cond
+                    img(src=`${curUser.profilePic}`)
+                else 
+                    img(src=`/img/users/${curUser.profilePic}`)
+              //- img(src=`/img/users/${curUser.profilePic}`)
             else
               if canEdit
                 div
@@ -253,7 +258,12 @@ block cont
                   if eval.quiz.user.profilePic
                     a(href="/profile")
                       .profile-pic-c
-                        img(src=`/img/users/${eval.quiz.user.profilePic}`)
+                        -let cond=eval.quiz.user.profilePic && eval.quiz.user.profilePic.startsWith("http")
+                        if cond
+                          img(src=`${eval.quiz.user.profilePic}`)
+                        else 
+                          img(src=`/img/users/${eval.quiz.user.profilePic}`)
+                        //- img(src=`/img/users/${eval.quiz.user.profilePic}`)
                   else
                     a(href="/profile")
                       div(style=`background-color :${eval.quiz.user.color};`).profile= eval.quiz.user.firstName[0].toUpperCase()

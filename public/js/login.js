@@ -3,7 +3,7 @@ import { showAlert, hideAlert } from "./alert.js";
 const urlParams = new URLSearchParams(window.location.search);
 const err = urlParams.get("e");
 if (err) {
-  showAlert("Log in to access this page");
+  showAlert(err);
 }
 
 const login = async (email, password) => {
@@ -24,4 +24,14 @@ document.querySelector(".submit-normal").addEventListener("click", () => {
   const email = document.querySelector(".inp-email").value;
   const password = document.querySelector(".inp-password").value;
   login(email, password);
+});
+
+document.querySelector(".submit-google").addEventListener("click", () => {
+  const url = document.querySelector(".submit-google").dataset.url;
+  location.href = url;
+});
+
+document.querySelector(".submit-dauth").addEventListener("click", () => {
+  const url = document.querySelector(".submit-dauth").dataset.url;
+  location.href = url;
 });

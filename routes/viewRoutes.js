@@ -18,4 +18,7 @@ router.get(
 );
 router.get("/friends", authController.redirect, viewController.friends);
 
+router.get("/api/oauth/google", authController.loginWithGoogle);
+router.get("/api/oauth/delta", authController.loginWithDelta);
+
 module.exports = router;

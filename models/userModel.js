@@ -42,6 +42,8 @@ const userSchema = mongoose.Schema(
         message: "Password and Confirm Password does not match",
       },
     },
+    google: { type: Boolean, default: false },
+    dauth: { type: Boolean, default: false },
     friends: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
     quizesTaken: [
       {

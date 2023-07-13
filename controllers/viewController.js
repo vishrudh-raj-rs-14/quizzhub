@@ -38,10 +38,66 @@ function timeSince(date) {
 }
 
 exports.login = (req, res) => {
-  res.status(200).render("login");
+  const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
+  const rootDurl = "http://auth.delta.nitt.edu/authorize";
+  const options = {
+    redirect_uri: process.env.GOOGLE_OAUTH_REDIRECT_URL,
+    client_id: process.env.GOOGLE_CLIENT_ID,
+    access_type: "offline",
+    response_type: "code",
+    prompt: "consent",
+    scope: [
+      "https://www.googleapis.com/auth/userinfo.email",
+      "https://www.googleapis.com/auth/userinfo.profile",
+    ].join(" "),
+  };
+  const doptions = {
+    redirect_uri: process.env.DELTA_OAUTH_REDIRECT_URL,
+    client_id: process.env.DELTA_CLIENT_ID,
+    grant_type: "authorization_code",
+    response_type: "code",
+    scope: "user",
+  };
+  const qs = new URLSearchParams(options);
+  const qsd = new URLSearchParams(doptions);
+
+  const url = `${rootUrl}?${qs.toString()}`;
+  const durl = `${rootDurl}?${qsd.toString()}`;
+  res.status(200).render("login", {
+    url,
+    durl,
+  });
 };
 exports.signUp = (req, res) => {
-  res.status(200).render("signUp");
+  const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
+  const rootDurl = "http://auth.delta.nitt.edu/authorize";
+  const options = {
+    redirect_uri: process.env.GOOGLE_OAUTH_REDIRECT_URL,
+    client_id: process.env.GOOGLE_CLIENT_ID,
+    access_type: "offline",
+    response_type: "code",
+    prompt: "consent",
+    scope: [
+      "https://www.googleapis.com/auth/userinfo.email",
+      "https://www.googleapis.com/auth/userinfo.profile",
+    ].join(" "),
+  };
+  const doptions = {
+    redirect_uri: process.env.DELTA_OAUTH_REDIRECT_URL,
+    client_id: process.env.DELTA_CLIENT_ID,
+    grant_type: "authorization_code",
+    response_type: "code",
+    scope: "user",
+  };
+  const qs = new URLSearchParams(options);
+  const qsd = new URLSearchParams(doptions);
+
+  const url = `${rootUrl}?${qs.toString()}`;
+  const durl = `${rootDurl}?${qsd.toString()}`;
+  res.status(200).render("signUp", {
+    url,
+    durl,
+  });
 };
 exports.home = catchAync(async (req, res) => {
   let quizesquery = Quiz.find({

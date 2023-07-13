@@ -171,7 +171,11 @@ block content
                   if quiz.user.profilePic
                     a(href=`/${quiz.user_id}/profile`)
                       .profile-pic-c
-                        img(src=`img/users/${quiz.user.profilePic}`)
+                        -let cond=quiz.user.profilePic && quiz.user.profilePic.startsWith("http")
+                        if cond
+                          img(src=`${quiz.user.profilePic}`)
+                        else 
+                          img(src=`/img/users/${quiz.user.profilePic}`)
                   else
                     a(href=`/${quiz.user._id}/profile`)  
                       div(style=`background-color:${quiz.user.color}`).profile= quiz.user.firstName[0].toUpperCase()
