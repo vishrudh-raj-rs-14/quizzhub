@@ -1,0 +1,71 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    link(rel='preconnect', href='https://fonts.googleapis.com')
+    link(rel='preconnect', href='https://fonts.gstatic.com', crossorigin='')
+    link(href='https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap', rel='stylesheet')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css', integrity='sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==', crossorigin='anonymous', referrerpolicy='no-referrer')
+    link(rel='stylesheet', href='/css/base.css')
+    link(rel='stylesheet', href='/css/takeQuiz.css')
+    title Create Quiz
+  body
+    .confirm-modal.modal-off
+      .confirm-modal-window
+        .confirm-heading
+          h1 Submit Test ?
+          // <i class="fa-solid fa-x" style="color: #fafafa"></i>
+        // <hr />
+        .confirm-desc
+          | Are you sure you want to submit the test ?
+          span.confirm-err-val
+            | You Have not attempted 5 questions
+        .confirm-btns
+          button.cancel Cancel
+          button.confirm Confirm
+    .main-nav=quiz.name
+    .body-container
+      .side-bar
+        .quiz-details.li-item
+          // <i class="fa-solid fa-pen fa-lg" style="color: #fcfcfc"></i>
+          i.fa-solid.fa-pen-to-square.fa-xl(style='color: #fafafa')
+          span Questions
+        hr
+        .questions
+            -let c=0
+            for question in quiz.questions 
+                -c+=1
+                .question(data-active=`${c}`)=c
+        .last.submit-btn
+          button.submit Submit Test
+      .content-c
+        .content
+            -let p=1
+            for question in quiz.questions
+                div(id=`q${p}-page` class=`question-page ${(p!=1?"hide":"")}`)
+                    .add-details
+                        .question-tit=question.questionName
+                        if question.image
+                            .question-img-desc
+                                img(src=`/img/quizzes/${question.image}`)
+                        .question-desc=question.questionDesc
+                        .options.detail-item
+                            -let x=1
+                            for option in question.options
+                                .option
+                                    span.number=`${x})`
+                                    .option-ans=option
+                                    label.checkbox(for=`${p}_${x}`)
+                                        input(id=`${p}_${x}`,type='radio', name=`q${p}`, value=`${x}`, class=`option-inp hide`)
+                                -x+=1
+                        .quiz-btns
+                            .back
+                                button Back
+                            .next
+                                button Next
+                            // <div class="save"><button>Create Quiz</button></div>
+                -p+=1
+    script(src='https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js')
+    script(src='/js/takeQuiz.js', type="module")

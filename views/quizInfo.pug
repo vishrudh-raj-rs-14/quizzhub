@@ -1,0 +1,223 @@
+//- doctype html
+//- html(lang='en')
+//-   head
+//-     meta(charset='UTF-8')
+//-     meta(http-equiv='X-UA-Compatible', content='IE=edge')
+//-     meta(name='viewport', content='width=device-width, initial-scale=1.0')
+//-     link(rel='preconnect', href='https://fonts.googleapis.com')
+//-     link(rel='preconnect', href='https://fonts.gstatic.com', crossorigin='')
+//-     link(href='https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap', rel='stylesheet')
+//-     link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css', integrity='sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==', crossorigin='anonymous', referrerpolicy='no-referrer')
+//-     link(rel='stylesheet', href='/css/base.css')
+//-     link(rel='stylesheet', href='/css/quizHomePage.css')
+//-     title The Ultimate React Quiz
+//-   body
+//-     .body
+//-       .main-nav
+//-         a(href="/")
+//-           .logo QUIZZHUB
+//-         .search
+//-           .search-inp
+//-             input(type='text', placeholder='Search a quiz')
+//-           .search-btn
+//-             img(src='/img/search (1).png')
+//-         .profile-container
+//-           i.fa-regular.fa-bell.fa-lg(style='color: #f7f7f7')
+//-           if user.profilePic
+//-             a(href="/profile")
+//-               .profile-pic-c
+//-                 img(src=`/img/users/${user.profilePic}`)
+//-           else
+//-             a(href="/profile")  
+//-               div(style=`background-color :${user.color};`).profile= user.firstName[0].toUpperCase()
+//-       .body-container
+//-         .side-bar
+//-           .side-bar-1
+//-             a(href="/").li-item
+//-               i.fa-solid.fa-house.fa-lg(style='color: #fafafa')
+//-               span  Home 
+//-             .li-item
+//-               i.fa-regular.fa-compass.fa-lg(style='color: #fafafa')
+//-               span  Explore 
+//-             a(href="/friends").li-item
+//-               i.fa-solid.fa-user-group.fa-lg(style='color: #fafafa')
+//-               span  Friends 
+//-             // <div class="li-item"></div>
+//-           hr
+//-           .side-bar-1
+//-             .li-item
+//-               i.fa-solid.fa-plus.fa-lg(style='color: #fafafa')
+//-               span  Create Quiz 
+//-           hr
+//-           .side-bar-1
+//-             .side-bar-head Friends
+//-             .li-item
+//-               img.avatar(src='/img/propic1.jpg')
+//-               span  John Smith 
+//-             .li-item
+//-               img.avatar(src='/img/propic2.jpg')
+//-               span  Alex 
+//-             .li-item
+//-               img.avatar(src='/img/propic3.jpg')
+//-               span  Andrea Wilson 
+//-             .li-item
+//-               img.avatar(src='/img/propic1.jpg')
+//-               span  John Smith 
+//-             .li-item
+//-               img.avatar(src='/img/propic2.jpg')
+//-               span  Alex 
+//-             .li-item
+//-               img.avatar(src='/img/propic3.jpg')
+//-               span  Andrea Wilson 
+//-             // <div class="li-item"></div>
+//-         .main-c
+//-           .main-head=quiz.name
+//-           .desc
+//-             div Description
+//-             span=quiz.description
+//-           .desc.inst
+//-             div Instructions
+//-             .inst-points
+//-               div
+//-                 div
+//-                   | Eligibility: Only registered participants are allowed to take
+//-                   | part in the quiz.
+//-                 div
+//-                   | Timelines: The quiz will be available for a specific period.
+//-                   | Late entries will not be accepted.
+//-                 div
+//-                   | Individual Participation: Participants must complete the quiz
+//-                   | individually. Collaboration or sharing of answers is strictly
+//-                   | prohibited.
+//-                 div
+//-                   | Time Limit: There will be a predefined time limit for
+//-                   | completing the quiz. Participants must submit their answers
+//-                   | within this timeframe. Late submissions will not be accepted.
+//-                 div
+//-                   | Authenticity: All answers must be the participant&apos;s original
+//-                   | work. Plagiarism or copying from external sources will result
+//-                   | in disqualification.
+//-                 div
+//-                   | Technology Requirements: Participants must have a stable
+//-                   | internet connection and use a compatible web browser to access
+//-                   | the quiz app.
+//-                 div
+//-                   | Academic Honesty: Participants must maintain academic
+//-                   | integrity throughout the quiz. Cheating, using unauthorized
+//-                   | aids, or attempting to gain an unfair advantage is strictly
+//-                   | prohibited.
+//-                 div
+//-                   | Communication: Participants should not discuss or disclose
+//-                   | quiz questions, answers, or any related information to other
+//-                   | participants until the quiz period is over.
+//-                 div
+//-                   | System Integrity: Any attempt to disrupt the quiz app or
+//-                   | manipulate its settings is strictly prohibited and may result
+//-                   | in penalties.
+//-                 div
+//-                   | Submission: Participants must submit their answers within the
+//-                   | designated quiz app before the deadline. Failure to submit
+//-                   | before the deadline will result in a score of zero.
+//-                 div
+//-                   | Grading: The quiz will be graded based on predetermined
+//-                   | criteria. The organizer&apos;s decision regarding grading will be
+//-                   | final and cannot be disputed.
+//-                 div
+//-                   | Participant Conduct: Participants are expected to behave
+//-                   | respectfully and responsibly throughout the quiz. Any form of
+//-                   | harassment, inappropriate language, or disrespectful behavior
+//-                   | will not be tolerated.
+//-                 div
+//-                   | Privacy: Participants&apos; personal information and quiz responses
+//-                   | will be treated with strict confidentiality and used solely
+//-                   | for the purpose of the quiz.
+//-                 div
+//-                   | Disclaimer: The quiz organizers reserve the right to modify
+//-                   | the rules, cancel or reschedule the quiz, or disqualify
+//-                   | participants found violating the rules.
+//-           .takeQuiz-btns
+//-             a(href=`/quiz/${quiz._id}/take`)
+//-                 button Take Quiz
+//-     script(src='https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js')
+//-     script(src="/js/general.js")
+//-     script(src='/js/quizHomePage.js')
+
+extends layout.pug
+
+block title
+  title=quiz.name 
+  
+block styles
+    link(rel='stylesheet', href='/css/quizHomePage.css')
+
+block content
+        .main-c
+          .main-head=quiz.name
+          .desc
+            div Description
+            span=quiz.description
+          .desc.inst
+            div Instructions
+            .inst-points
+              div
+                div
+                  | Eligibility: Only registered participants are allowed to take
+                  | part in the quiz.
+                div
+                  | Timelines: The quiz will be available for a specific period.
+                  | Late entries will not be accepted.
+                div
+                  | Individual Participation: Participants must complete the quiz
+                  | individually. Collaboration or sharing of answers is strictly
+                  | prohibited.
+                div
+                  | Time Limit: There will be a predefined time limit for
+                  | completing the quiz. Participants must submit their answers
+                  | within this timeframe. Late submissions will not be accepted.
+                div
+                  | Authenticity: All answers must be the participant&apos;s original
+                  | work. Plagiarism or copying from external sources will result
+                  | in disqualification.
+                div
+                  | Technology Requirements: Participants must have a stable
+                  | internet connection and use a compatible web browser to access
+                  | the quiz app.
+                div
+                  | Academic Honesty: Participants must maintain academic
+                  | integrity throughout the quiz. Cheating, using unauthorized
+                  | aids, or attempting to gain an unfair advantage is strictly
+                  | prohibited.
+                div
+                  | Communication: Participants should not discuss or disclose
+                  | quiz questions, answers, or any related information to other
+                  | participants until the quiz period is over.
+                div
+                  | System Integrity: Any attempt to disrupt the quiz app or
+                  | manipulate its settings is strictly prohibited and may result
+                  | in penalties.
+                div
+                  | Submission: Participants must submit their answers within the
+                  | designated quiz app before the deadline. Failure to submit
+                  | before the deadline will result in a score of zero.
+                div
+                  | Grading: The quiz will be graded based on predetermined
+                  | criteria. The organizer&apos;s decision regarding grading will be
+                  | final and cannot be disputed.
+                div
+                  | Participant Conduct: Participants are expected to behave
+                  | respectfully and responsibly throughout the quiz. Any form of
+                  | harassment, inappropriate language, or disrespectful behavior
+                  | will not be tolerated.
+                div
+                  | Privacy: Participants&apos; personal information and quiz responses
+                  | will be treated with strict confidentiality and used solely
+                  | for the purpose of the quiz.
+                div
+                  | Disclaimer: The quiz organizers reserve the right to modify
+                  | the rules, cancel or reschedule the quiz, or disqualify
+                  | participants found violating the rules.
+          .takeQuiz-btns
+            a(href=`/quiz/${quiz._id}/take`)
+                button Take Quiz
+block jslinks
+  script(src='/js/quizHomePage.js')

@@ -1,0 +1,386 @@
+:root {
+  --prof-width: 30vw;
+  --second-nav: 5vw;
+}
+body {
+  font-family: "Montserrat", sans-serif;
+  color: white;
+  /* overflow: hidden; */
+  height: 100vh;
+}
+.bodyContainer {
+  display: flex;
+}
+.search {
+  position: relative;
+}
+
+.profile-sidebar {
+  width: var(--prof-width);
+  /* min-height: 100vh; */
+  background-color: #12151b;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+}
+.prof-s-2 {
+  width: var(--second-nav) !important;
+}
+
+.profile-main {
+  width: calc(100% - var(--prof-width) - var(--second-nav));
+  /* min-height: 100vh; */
+  background-color: transparent;
+  padding: 20px 30px;
+}
+
+.profile-c {
+  border-radius: 20px;
+  height: calc(100vh - 7vh);
+  padding: 20px 30px;
+}
+.profile-pic {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.profile-letter {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  font-size: 70px !important;
+  background-color: #3457d5 !important;
+  color: white;
+  opacity: 1 !important;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-pic img {
+  width: 100%;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.profile-info .name {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.profile-tags {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 50px;
+}
+
+.sub-name {
+  font-size: 14px;
+  color: rgba(205, 202, 202, 0.913);
+  margin-top: -10px;
+}
+
+.profile-tags div {
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: 300;
+  border-radius: 40px;
+  background-color: rgba(34, 222, 78, 0.745);
+}
+
+.profile-tags div:nth-child(1) {
+  background-color: rgba(34, 147, 222, 0.745);
+}
+
+.profile-tags div:nth-child(2) {
+  background-color: rgba(129, 32, 186, 0.745);
+}
+
+.profile-tags div:nth-child(3) {
+  background-color: rgba(234, 43, 231, 0.604);
+}
+
+.profile-tags div:nth-child(4) {
+  background-color: rgba(34, 222, 78, 0.745);
+}
+
+.profile-tags div:nth-child(5) {
+  background-color: rgba(234, 44, 44, 0.745);
+}
+
+.yourQuiz {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #13151b;
+  margin-bottom: 20px;
+}
+
+.open {
+  display: flex !important;
+}
+
+.yourQuiz div {
+  text-align: center;
+  width: 50%;
+  height: 35px;
+  display: grid;
+  place-items: center;
+  transition: all 250ms ease;
+}
+
+.elseCan {
+  /* background-color: #13151b; */
+  /* display: flex; */
+}
+
+.yourQuiz div:hover {
+  cursor: pointer;
+  background-color: #212634;
+}
+
+.elseCan:hover {
+  background-color: #13151b !important;
+  cursor: pointer !important;
+  /* user-select: none; */
+  /* pointer-events: none; */
+}
+
+.card-prof {
+  width: 100%;
+}
+
+.quiz-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+  height: 85vh;
+  overflow: scroll;
+  display: none;
+}
+.prof2 {
+  /* padding: 5px !important; */
+  align-items: flex-start;
+}
+
+.side-bar-1 {
+  margin-bottom: 20px;
+}
+
+.side-bar-1 {
+  width: 80% !important;
+}
+
+.prof-quiz-details {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  font-size: 20px;
+  font-weight: 300;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.quizes-detail-inner {
+  width: 70%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.quizes-detail-inner span:nth-child(2) {
+  color: rgba(55, 255, 218, 0.842);
+}
+
+.profile-pic {
+  position: relative;
+}
+
+.profile-pic div:first-child {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* width: 100%; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* height: 100%; */
+  z-index: 5;
+  background-color: rgba(0, 0, 0, 0.672);
+  transition: all 250ms ease;
+  opacity: 0;
+}
+
+.profile-pic:hover div:first-child {
+  opacity: 1;
+}
+
+.modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 200;
+  background-color: rgba(0, 0, 0, 0.444);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-window {
+  background-color: rgb(235, 235, 235);
+  min-width: 400px;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(46, 120, 224);
+  border-radius: 10px;
+  position: relative;
+}
+
+.hidden {
+  display: none;
+}
+.modal-window label {
+  padding: 20px;
+  border-radius: 10px;
+  font-size: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+}
+.pro-sample-c {
+  max-width: 300px;
+  min-width: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pro-sample {
+  width: 300px;
+}
+
+.pro-btns-modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60%;
+}
+
+.pro-btns-modal button {
+  font-size: 12px;
+  color: white;
+  padding: 8px 15px;
+  margin: 5px 0px;
+  font-weight: 300 !important;
+  border-radius: 5px;
+  outline: none;
+  transition: all 250ms ease;
+  border: none;
+}
+
+.next button {
+  background-color: transparent;
+  border: 1px solid white;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.next button:hover {
+  transform: translateY(-5px);
+  background-color: rgb(255, 255, 255);
+  color: rgb(46, 120, 224);
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.modal-off {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  z-index: 10;
+}
+
+.next button:active {
+  transform: translateY(-2px);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  background-color: rgb(239, 239, 239);
+}
+
+.modal-off-state {
+  opacity: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+.active {
+  background-color: #1c202b;
+}
+
+.quiz-eval-card {
+  display: flex;
+  gap: 15px;
+  width: 100%;
+  padding: 10px 20px;
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.441);
+}
+
+.profile {
+  border-radius: 100%;
+  width: 40px;
+  height: 40px;
+}
+
+.name-dif {
+  width: 80%;
+}
+
+.name {
+  font-size: 16px;
+}
+
+.diff {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.738);
+}
+
+.marks-time {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 20%;
+}
+
+.timeSince {
+  color: rgba(255, 255, 255, 0.618);
+  font-size: 12px;
+}

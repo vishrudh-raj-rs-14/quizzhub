@@ -1,0 +1,81 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    link(rel='preconnect', href='https://fonts.googleapis.com')
+    link(rel='preconnect', href='https://fonts.gstatic.com', crossorigin='')
+    link(href='https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap', rel='stylesheet')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css', integrity='sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==', crossorigin='anonymous', referrerpolicy='no-referrer')
+    link(rel='stylesheet', href='/css/base.css')
+    block styles
+    block title
+  body
+    .body
+      .main-nav
+        a(href="/")
+          .logo QUIZZHUB
+        .search
+          .search-inp
+            if name 
+              input(type='text', placeholder='Search a quiz', value=`${name}`)
+            else
+              input(type='text', placeholder='Search a quiz')
+          .search-btn
+            img(src='/img/search (1).png')
+        if user
+          .profile-container
+            .notification-center.noti-off
+              -let c=0
+              if myReq
+                for req in myReq
+                  if req.status==1
+                    -c+=1
+                    .noti-card(data-id=req.from._id)
+                      .noti-data
+                        .noti-head=`${req.from.firstName[0].toUpperCase()}${req.from.firstName.slice(1)} sent you a friend request`
+                        .noti-time=timeSince(req.time)
+                      .noti-opt
+                        .noti-acc
+                          i.fa-solid.fa-check(style="color:#fafafa")
+                        .noti-dec
+                          i.fa-solid.fa-x.fa-sm(style="color:#fafafa")
+              if resultReq
+                for req2 in resultReq
+                  if req2.status==2
+                      -c+=1
+                      .noti-card(data-id=req2._id)
+                        .noti-data
+                          .noti-head=`${req2.to.firstName[0].toUpperCase()}${req2.to.firstName.slice(1)} accepted your friend request`
+                          .noti-time=timeSince(req2.time)
+                        .noti-opt
+                          .noti-rem
+                            i.fa-solid.fa-x.fa-sm(style="color:#fafafa")
+                  if req2.status==3
+                      -c+=1
+                      .noti-card(data-id=req2._id)
+                        .noti-data
+                          .noti-head=`${req2.to.firstName[0].toUpperCase()}${req2.to.firstName.slice(1)} declined your friend request`
+                          .noti-time=timeSince(req2.time)
+                        .noti-opt
+                          .noti-rem
+                            i.fa-solid.fa-x.fa-sm(style="color:#fafafa")
+              if c==0
+                .noti-null No New Notifications Available
+            .noti-activate
+              i.fa-regular.fa-bell.fa-lg(style='color: #f7f7f7')
+            if user.profilePic
+              a(href="/profile")
+                .profile-pic-c
+                  img(src=`/img/users/${user.profilePic}`)
+            else
+              a(href="/profile")  
+                div(style=`background-color :${user.color} !important;`).profile= user.firstName[0].toUpperCase()
+        else
+          .profile-container
+            a.nav__el.nav__el--cta(href="/login") Log In
+            a.nav__el.nav__el--cta(href="/signUp") Sign UP
+      .body-container
+        block cont
+    block jslink

@@ -1,0 +1,54 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    link(rel='preconnect', href='https://fonts.googleapis.com')
+    link(rel='preconnect', href='https://fonts.gstatic.com', crossorigin='')
+    link(href='https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap', rel='stylesheet')
+    link(rel='stylesheet', href='css/base.css')
+    link(rel='stylesheet', href='css/style.css')
+    title Login Page
+  body
+    .container
+      .login-header
+        span.login-test Welcome
+        h1 Create your account
+      .inp-container
+        .inputs
+          .input-text First Name
+          input.inp-fname(placeholder='John@gmail.com', type='email')
+        .inputs
+          .input-text Last Name
+          input.inp-lname(placeholder='John@gmail.com', type='email')
+        .inputs
+          .input-text E-mail
+          input.inp-email(placeholder='John@gmail.com', type='email')
+        .inputs
+          .input-text
+            div Password
+          input.inp-password(placeholder='Type a strong password', type='password')
+        .inputs
+          .input-text
+            div Confirm Password
+          input.inp-cpassword(placeholder='Retype your Password', type='password')
+      .submit
+        button.submit-normal Sign Up
+        div
+          button.submit-google
+            | Sign Up with 
+            img(src='./img/search 1.png')
+          //
+            <button class="submit-dauth">
+            Login Now with <img src="./img/delta.png" />
+            </button>
+        // <button class="submit-google">Log In with</button>
+        // <button class="submit-dauth">Log In with</button>
+        .forgot
+          div
+            | Already a user?
+            a(href="/login")
+              span.forgot-text Login&rarr;
+    script(src='https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js')
+    script(src="js/signup.js", type="module")

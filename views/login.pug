@@ -1,0 +1,45 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    link(rel='preconnect', href='https://fonts.googleapis.com')
+    link(rel='preconnect', href='https://fonts.gstatic.com', crossorigin='')
+    link(href='https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap', rel='stylesheet')
+    link(rel='stylesheet', href='css/base.css')
+    link(rel='stylesheet', href='css/style.css')
+    title Login Page
+  body
+    .container
+      .login-header
+        span.login-test Welcome Back
+        h1 Log into your account
+      .inp-container
+        .inputs
+          .input-text E-mail
+          input.inp-email(placeholder='John@gmail.com', type='email')
+        .inputs
+          .input-text
+            div Password
+            .fp Forgot Password?
+          input.inp-password(placeholder='Type your password', type='password')
+      .submit
+        button.submit-normal Login Now
+        div
+          button.submit-google
+            | Login Now with 
+            img(src='img/search 1.png')
+          button.submit-dauth
+            | Login Now with 
+            img(src='./img/delta.png')
+        // <button class="submit-google">Log In with</button>
+        // <button class="submit-dauth">Log In with</button>
+        .forgot
+          div
+            | Not registered yet?
+            a(href="/signUp")
+                span.forgot-text  Register&rarr;
+    //- script(src='https://kit.fontawesome.com/9f2d1fa8d1.js', crossorigin='anonymous')
+    script(src='https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js')
+    script(src="js/login.js", type="module")

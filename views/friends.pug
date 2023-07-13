@@ -1,0 +1,48 @@
+extends layout.pug
+
+block styles 
+    link(rel='stylesheet', href='css/friends.css')
+block content
+  .friends-container
+    .friends-search-bar
+      .search.friend-search-c
+        .search-inp.friend-search
+          input(type='text', placeholder='Enter friends name or email')
+        .search-btn.frd-search-btn
+          img(src='/img/search (1).png')
+    .frd-sug Suggested
+    .frd-list
+        for user in users
+             .frd-card(data-user=`${user._id}`)
+                if user.profilePic
+                         .profile-pic-c
+                            img(src=`img/users/${user.profilePic}`)
+                else
+                        div(style=`background-color :${user.color};`).profile= user.firstName[0].toUpperCase()
+                .name-email
+                    if user.name
+                         .name=`${user.name[0].toUpperCase()}${user.name.slice(1)}`
+                    else 
+                        .name=`${user.firstName[0].toUpperCase()}${user.firstName.slice(1)} ${user.lastName[0].toUpperCase()}${user.lastName.slice(1)}`
+                    .email=user.email
+                .request-icons
+                    a(href=`/${user._id}/profile`)
+                        .icon
+                          i.fas.fa-user-friends.fa-lg(style='color: #fafafa')
+                    if friendList.includes(String(user._id))
+                       .unFriend.icon
+                         i.fa-solid.fa-user-slash.fa-lg(style="color: #fafafa;")
+                    else if idList.includes(String(user._id))
+                      .removeReq.icon
+                        i.fa-sharp.fa-solid.fa-square-minus(style='color: #fafafa')
+                    else if toMeIdList.includes(String(user._id))
+                       .card-acc.icon
+                         i.fa-solid.fa-check.fa-lg(style="color:#fafafa")
+                       .card-dec.icon
+                         i.fa-solid.fa-x(style="color:#fafafa")
+                    else
+                      .icon
+                        i.fa-solid.fa-plus.fa-lg.add(style='color: #fafafa')
+block jslinks
+  script(src='js/friends.js', type="module")
+

@@ -1,0 +1,120 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    link(rel='preconnect', href='https://fonts.googleapis.com')
+    link(rel='preconnect', href='https://fonts.gstatic.com', crossorigin='')
+    link(href='https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap', rel='stylesheet')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css', integrity='sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==', crossorigin='anonymous', referrerpolicy='no-referrer')
+    link(rel='stylesheet', href='css/base.css')
+    link(rel='stylesheet', href='css/create_quiz.css')
+    title Create Quiz
+  body
+    .main-nav Create Quiz
+    .body-container
+      .side-bar
+        .quiz-details.li-item
+          i.fa-solid.fa-pen.fa-lg(style='color: #fcfcfc')
+          span Add Quiz Details
+        hr
+        .questions
+          .question(data-active='1') 1
+          .question.plus
+            i.fa-solid.fa-plus.fa-lg(style='color: #fafafa')
+      .content
+        .details
+          .details-head Add Quiz Details
+          .add-details
+            .heading.detail-item
+              span  Quiz Name :
+              span
+                input#quizname(type='text', placeholder='Enter a name for your Quiz')
+            .description.detail-item
+              span  Description :
+              span
+                textarea#quizdesc.desc(type='text', placeholder='Enter a decription for your quiz')
+            .radio-settings.detail-item
+              span  Difficulty :
+              .radio-options
+                label(for='easy')
+                  input#easy.radio(type='radio', name='selector', value='easy')
+                  span Easy
+                label(for='medium')
+                  input#medium.radio(type='radio', name='selector', value='medium')
+                  span Medium
+                label(for='hard')
+                  input#hard.radio(type='radio', name='selector', value='hard')
+                  span Hard
+            .restrict.toggle
+              .toggle-text Make Private:
+              .toggle-btn
+                input(type="checkbox")#restrict
+                label(for="restrict")
+                  .toggle-circle 
+            .tags.detail-item
+              span  Tags: 
+              span
+                //
+                  <div class="tags-edit first" contenteditable>
+                  Create tags here...
+                  </div>
+                .tags-edit-c
+                  input.tags-edit.first(placeholder='Create Tags Here...')
+            .quiz-btns
+              .discard
+                button Discard
+              .next
+                button Next
+        #q1-page.question-page.hide
+          .details-head Add Question 1:
+          .add-details
+            .heading.detail-item
+              span  Title :
+              span
+                input#questionName(type='text', placeholder='Enter Question Name')
+            .description.detail-item
+              span  Description :
+              span
+                textarea#questionDesc.desc.desc-ques(type='text', placeholder='Enter a decription for your question')
+            .radio-settings.detail-item.file-holder
+              span  Image :
+              .file-inp
+                .file-c
+                  .file-text Add an image
+                  .file-inp-c
+                    label.custom-file-upload
+                      input.file(type='file', accept='image/*')
+                      Choose file
+            .options.detail-item
+              .option
+                span.number 1#{")"}
+                input.option-inp(type='text', placeholder='Type an option')
+                label.checkbox(for='1_1')
+                  input#1_1.option-inp.hide(type='radio', name='q1', value='1')
+              .option
+                span.number 2#{")"}
+                input.option-inp(type='text', placeholder='Type an option')
+                label.checkbox(for='1_2')
+                  input#1_2.option-inp.hide(type='radio', name='q1', value='2')
+              .option
+                span.number 3#{")"}
+                input.option-inp(type='text', placeholder='Type an option')
+                label.checkbox(for='1_3')
+                  input#1_3.option-inp.hide(type='radio', name='q1', value='3')
+              .option
+                span.number 4#{")"}
+                input.option-inp(type='text', placeholder='Type an option')
+                label.checkbox(for='1_4')
+                  input#1_4.option-inp.hide(type='radio', name='q1', value='4')
+            .quiz-btns
+              .discard.delete
+                button Delete Question
+              div
+                .next
+                  button Next
+                .save
+                  button Create Quiz
+    script(src='https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js')
+    script(src='js/createQuiz.js', type="module")

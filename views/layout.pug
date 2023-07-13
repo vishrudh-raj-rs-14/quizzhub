@@ -1,0 +1,171 @@
+//- doctype html
+//- html(lang='en')
+//-   head
+//-     meta(charset='UTF-8')
+//-     meta(http-equiv='X-UA-Compatible', content='IE=edge')
+//-     meta(name='viewport', content='width=device-width, initial-scale=1.0')
+//-     link(rel='preconnect', href='https://fonts.googleapis.com')
+//-     link(rel='preconnect', href='https://fonts.gstatic.com', crossorigin='')
+//-     link(href='https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap', rel='stylesheet')
+//-     link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css', integrity='sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==', crossorigin='anonymous', referrerpolicy='no-referrer')
+//-     link(rel='stylesheet', href='css/base.css')
+//-     block styles
+//-     title Friends
+//-   body
+//-     .body
+//-       .main-nav
+//-         a(href="/")
+//-           .logo QUIZZHUB
+//-         .search
+//-           .search-inp
+//-             if name 
+//-               input(type='text', placeholder='Search a quiz', value=`${name}`)
+//-             else
+//-               input(type='text', placeholder='Search a quiz')
+//-           .search-btn
+//-             img(src='./img/search (1).png')
+//-         if user
+//-           .profile-container
+//-             .notification-center.noti-off
+//-               -let c=0
+//-               if myReq
+//-                 for req in myReq
+//-                   if req.status==1
+//-                     -c+=1
+//-                     .noti-card(data-id=req.from._id)
+//-                       .noti-data
+//-                         .noti-head=`${req.from.firstName[0].toUpperCase()}${req.from.firstName.slice(1)} sent you a friend request`
+//-                         .noti-time=timeSince(req.time)
+//-                       .noti-opt
+//-                         .noti-acc
+//-                           i.fa-solid.fa-check(style="color:#fafafa")
+//-                         .noti-dec
+//-                           i.fa-solid.fa-x.fa-sm(style="color:#fafafa")
+//-               if resultReq
+//-                 for req2 in resultReq
+//-                   if req2.status==2
+//-                       -c+=1
+//-                       .noti-card(data-id=req2._id)
+//-                         .noti-data
+//-                           .noti-head=`${req2.to.firstName[0].toUpperCase()}${req2.to.firstName.slice(1)} accepted your friend request`
+//-                           .noti-time=timeSince(req2.time)
+//-                         .noti-opt
+//-                           .noti-rem
+//-                             i.fa-solid.fa-x.fa-sm(style="color:#fafafa")
+//-                   if req2.status==3
+//-                       -c+=1
+//-                       .noti-card(data-id=req2._id)
+//-                         .noti-data
+//-                           .noti-head=`${req2.to.firstName[0].toUpperCase()}${req2.to.firstName.slice(1)} declined your friend request`
+//-                           .noti-time=timeSince(req2.time)
+//-                         .noti-opt
+//-                           .noti-rem
+//-                             i.fa-solid.fa-x.fa-sm(style="color:#fafafa")
+//-               if c==0
+//-                 .noti-null No New Notifications Available
+//-             .noti-activate
+//-               i.fa-regular.fa-bell.fa-lg(style='color: #f7f7f7')
+//-             if user.profilePic
+//-               a(href="/profile")
+//-                 .profile-pic-c
+//-                   img(src=`img/users/${user.profilePic}`)
+//-             else
+//-               a(href="/profile")  
+//-                 div(style=`background-color :${user.color};`).profile= user.firstName[0].toUpperCase()
+//-         else
+//-           .profile-container
+//-             a.nav__el.nav__el--cta(href="/login") Log In
+//-             a.nav__el.nav__el--cta(href="/signUp") Sign UP
+//-       .body-container
+//-         .side-bar
+//-           .side-bar-1
+//-             .li-item
+//-               i.fa-solid.fa-house.fa-lg(style='color: #fafafa')
+//-               span  Home 
+//-             .li-item
+//-               i.fa-regular.fa-compass.fa-lg(style='color: #fafafa')
+//-               span  Explore 
+//-             a(href="/friends").li-item
+//-               i.fa-solid.fa-user-group.fa-lg(style='color: #fafafa')
+//-               span  Friends 
+//-             // <div class="li-item"></div>
+//-           hr
+//-           .side-bar-1
+//-             .li-item
+//-               i.fa-solid.fa-plus.fa-lg(style='color: #fafafa')
+//-               span  Create Quiz 
+//-           hr
+//-           .side-bar-1
+//-             .side-bar-head Friends
+//-             .li-item
+//-               img.avatar(src='./img/propic1.jpg')
+//-               span  John Smith 
+//-             .li-item
+//-               img.avatar(src='./img/propic2.jpg')
+//-               span  Alex 
+//-             .li-item
+//-               img.avatar(src='./img/propic3.jpg')
+//-               span  Andrea Wilson 
+//-             .li-item
+//-               img.avatar(src='./img/propic1.jpg')
+//-               span  John Smith 
+//-             .li-item
+//-               img.avatar(src='./img/propic2.jpg')
+//-               span  Alex 
+//-             .li-item
+//-               img.avatar(src='./img/propic3.jpg')
+//-               span  Andrea Wilson 
+//-             // <div class="li-item"></div>
+//-         .main-body
+//-             block content 
+//-     script(src='https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js')
+//-     script(src="js/general.js", type="module")
+//-     block jslink
+
+extends nav.pug 
+
+block cont
+        .side-bar
+          .side-bar-1
+            a(href="/").li-item
+              i.fa-solid.fa-house.fa-lg(style='color: #fafafa')
+              span  Home 
+            .li-item
+              i.fa-regular.fa-compass.fa-lg(style='color: #fafafa')
+              span  Explore 
+            a(href="/friends").li-item
+              i.fa-solid.fa-user-group.fa-lg(style='color: #fafafa')
+              span  Friends 
+            // <div class="li-item"></div>
+          hr
+          .side-bar-1
+            a(href="/create").li-item
+              i.fa-solid.fa-plus.fa-lg(style='color: #fafafa')
+              span  Create Quiz 
+          hr
+          .side-bar-1
+            .side-bar-head Friends
+            for friend in user.friends
+                a(href=`/${friend._id}/profile`).li-item
+                    if friend.profilePic
+                        img.avatar(src=`/img/users/${friend.profilePic}`)
+                    else
+                        div(style=`background-color :${friend.color} !important;`).smaller.profile=friend.firstName[0].toUpperCase()
+                    span=`${friend.firstName[0].toUpperCase()}${friend.firstName.slice(1)} ${friend.lastName[0].toUpperCase()}${friend.lastName.slice(1)}`
+            // <div class="li-item"></div>
+            -let c = !user.friends || !user.friends.length
+            if c
+                .li-item.no-info No Friends
+            if user
+                hr
+                .side-bar-1
+                    .li-item(id="logout")
+                        i(class="fa-solid fa-right-from-bracket" style="color: #fafafa;")
+                        span Log Out
+        .main-body
+            block content 
+    
+block jslink
+    script(src='https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js')
+    script(src="/js/general.js", type="module")
+    block jslinks

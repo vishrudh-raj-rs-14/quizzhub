@@ -1,0 +1,203 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100vw;
+  height: 100vh;
+  /* background-color: ; */
+  background: linear-gradient(to bottom, #100f14b7, #100f14ba),
+    url(../img/bg.jpg) no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Montserrat", sans-serif;
+}
+
+.container {
+  /* width: 25vw; */
+  background-color: white;
+  padding: 20px 30px;
+  width: 350px;
+  /* height: 400px; */
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+  border-radius: 5px;
+  background-color: #1d1f22;
+  border: 1px solid #eaeaea55;
+}
+
+.container > div {
+  margin: 15px;
+}
+
+.container div:first-child h1 {
+  color: white;
+  margin-bottom: 0px;
+  font-size: 20px;
+  font-weight: 300;
+  /* color: #7f91f1; */
+}
+.inputs {
+  width: 100%;
+}
+
+.container input {
+  width: 100%;
+  border-radius: 5px;
+  color: white;
+  padding: 8px 8px;
+  font-size: 13px;
+  outline: none;
+  background-color: rgba(65, 65, 65, 0.2);
+  border: 1px solid #505050;
+  font-weight: 100;
+}
+
+.container input::placeholder {
+  font-weight: 300;
+  font-size: 12px;
+}
+
+.submit {
+  width: 100%;
+}
+.submit button {
+  width: 100%;
+  height: 35px;
+  font-size: 12px;
+  color: white;
+  margin: 5px 0px;
+  font-weight: 300 !important;
+  border-radius: 5px;
+  background-color: #3b7ffe;
+  outline: none;
+  transition: all 250ms ease;
+  border: none;
+}
+.submit div {
+  display: flex;
+  gap: 10px;
+}
+
+.submit img {
+  width: 20px;
+  margin: 0 10px;
+}
+.submit-google {
+  color: black !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(221, 221, 221, 0.925) !important;
+  transition: all 250ms ease;
+}
+
+.submit-google:hover {
+  background-color: white !important;
+}
+
+.submit-dauth {
+  display: flex;
+  background-color: rgba(34, 34, 34, 0.9) !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.submit-dauth:hover {
+  background-color: black !important;
+}
+
+.submit-dauth img {
+  margin: 0 10px 5px 10px;
+}
+.submit button:hover {
+  background-color: #2aa3ff;
+  cursor: pointer;
+}
+
+.forgot {
+  font-size: 10px;
+  color: white;
+  font-weight: 300;
+  text-align: center;
+}
+.forgot-text {
+  color: #ffffff;
+}
+.forgot-text:hover {
+  cursor: pointer;
+}
+
+.forgot {
+  color: #7b7b7b;
+  margin-top: 10px;
+}
+.forgot div {
+  margin: 5px;
+}
+
+.inp-container {
+  width: 100%;
+}
+.inp-container div {
+  margin: 15px 0;
+}
+
+.login-header {
+  display: flex;
+  flex-direction: column;
+}
+.login-header span {
+  font-size: 15px;
+  color: #707378;
+  text-align: center;
+}
+
+.inputs {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-text {
+  color: white;
+  margin: 4px 0px !important;
+  display: flex;
+  font-size: 12px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.input-text div {
+  margin: 0px 0px !important;
+}
+
+.fp {
+  font-size: 10px;
+  color: #7b7b7b;
+}
+
+.fp:hover {
+  cursor: pointer;
+}
+
+.inputs input:focus {
+  border: 1px solid rgba(255, 255, 255, 0.816);
+  box-shadow: rgba(255, 255, 255, 0.16) 0px 1px 2px,
+    rgba(255, 255, 255, 0.23) 0px 1px 2px;
+}
+
+.forgot div {
+  gap: 4px !important;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
