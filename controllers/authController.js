@@ -135,7 +135,9 @@ exports.loginWithGoogle = catchAync(async (req, res, next) => {
       .redirect("/");
   } else {
     res.redirect(
-      "/login?e=' + encodeURIComponent('You can't Login this email through google')"
+      `/login?e=${encodeURIComponent(
+        "You can't Login this email through google"
+      )}`
     );
   }
 
@@ -206,7 +208,9 @@ exports.loginWithDelta = catchAync(async (req, res, next) => {
       .redirect("/");
   } else {
     res.redirect(
-      "/login?e=' + encodeURIComponent('You can't Login this email through delta')"
+      `/login?e=${encodeURIComponent(
+        "You can't Login this email through dauth"
+      )}`
     );
   }
   // const nitUser = jwt.decode(id_token);
@@ -281,9 +285,7 @@ exports.redirect = (req, res, next) => {
   if (req.isLoggedIn) {
     next();
   } else {
-    res.redirect(
-      "/login?e=' + encodeURIComponent('Login to access this page')"
-    );
+    res.redirect(`/login?e=${encodeURIComponent("Login to access this page")}`);
   }
 };
 
