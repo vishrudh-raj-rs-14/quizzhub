@@ -51,6 +51,7 @@ const userSchema = mongoose.Schema(
         time: { type: Date, default: Date.now() },
         score: Number,
         totalScore: Number,
+        notified: { type: Boolean, default: false },
       },
     ],
     color: String,

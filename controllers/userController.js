@@ -72,9 +72,29 @@ module.exports.updateMe = catchAync(async (req, res, next) => {
     new: true,
     runValidators: true,
   });
-  console.log(req.file);
   res.status(200).json({
     status: "success",
     user,
+  });
+});
+
+module.exports.notify = catchAync(async (req, res, next) => {
+  if (!req.body.id) {
+    return next(new AppError("Specify the quiz that notified you"));
+  }
+  // console.log();
+  await User.updateOne(
+    { "quizesTaken._id": req.body.id },
+    { $set: { "quizesTaken.$[val].notified": true } },
+    {
+      arrayFilters: [
+        {
+          "val._id": req.body.id,
+        },
+      ],
+    }
+  );
+  res.status(200).json({
+    status: "success",
   });
 });

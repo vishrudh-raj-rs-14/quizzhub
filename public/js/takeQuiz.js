@@ -32,9 +32,7 @@ const submitTest = async function (id) {
       "Test Submitted Successfully. View your result in your profile",
       true
     );
-    console.log(res);
-    location.href =
-      "/?msg=Test Submitted Successfully. View your result in your profile";
+    location.href = `/?msg=Test Submitted Successfully. View your result in your profile&mark=${res.mark}&`;
   } catch (error) {
     showAlert("Something went wrong while Submitting");
     console.log(error);

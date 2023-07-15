@@ -28,39 +28,48 @@ html(lang='en')
           .profile-container
             .notification-center.noti-off
               -let c=0
-              if myReq
-                for req in myReq
+              if allReqs
+                for req in allReqs
                   if req.status==1
                     -c+=1
                     .noti-card(data-id=req.from._id)
                       .noti-data
                         .noti-head=`${req.from.firstName[0].toUpperCase()}${req.from.firstName.slice(1)} sent you a friend request`
-                        .noti-time=timeSince(req.time)
+                        .noti-time=timeSince(req.time)+" ago"
                       .noti-opt
                         .noti-acc
                           i.fa-solid.fa-check(style="color:#fafafa")
                         .noti-dec
                           i.fa-solid.fa-x.fa-sm(style="color:#fafafa")
-              if resultReq
-                for req2 in resultReq
-                  if req2.status==2
-                      -c+=1
-                      .noti-card(data-id=req2._id)
-                        .noti-data
-                          .noti-head=`${req2.to.firstName[0].toUpperCase()}${req2.to.firstName.slice(1)} accepted your friend request`
-                          .noti-time=timeSince(req2.time)
-                        .noti-opt
-                          .noti-rem
-                            i.fa-solid.fa-x.fa-sm(style="color:#fafafa")
-                  if req2.status==3
-                      -c+=1
-                      .noti-card(data-id=req2._id)
-                        .noti-data
-                          .noti-head=`${req2.to.firstName[0].toUpperCase()}${req2.to.firstName.slice(1)} declined your friend request`
-                          .noti-time=timeSince(req2.time)
-                        .noti-opt
-                          .noti-rem
-                            i.fa-solid.fa-x.fa-sm(style="color:#fafafa")
+                  else if req.status==2
+                      if String(user._id)!=String(req.to._id)
+                        -c+=1
+                        .noti-card(data-id=req._id)
+                          .noti-data
+                            .noti-head=`${req.to.firstName[0].toUpperCase()}${req.to.firstName.slice(1)} accepted your friend request`
+                            .noti-time=timeSince(req.time)+" ago"
+                          .noti-opt
+                            .noti-rem
+                              i.fa-solid.fa-x.fa-sm(style="color:#fafafa")
+                  else if req.status==3
+                      if String(user._id)!=String(req.to._id)
+                        -c+=1
+                        .noti-card(data-id=req._id)
+                          .noti-data
+                            .noti-head=`${req.to.firstName[0].toUpperCase()}${req.to.firstName.slice(1)} declined your friend request`
+                            .noti-time=timeSince(req.time)+" ago"
+                          .noti-opt
+                            .noti-rem
+                              i.fa-solid.fa-x.fa-sm(style="color:#fafafa")
+                  else 
+                        -c+=1
+                        .noti-card(data-id=req._id)
+                          .noti-data
+                            .noti-head=`You scored ${req.score}/${req.totalScore} marks in ${req.quiz.name}`
+                            .noti-time=timeSince(req.time)+" ago"
+                          .noti-opt
+                            .noti-mark-rem
+                              i.fa-solid.fa-x.fa-sm(style="color:#fafafa")
               if c==0
                 .noti-null No New Notifications Available
             .noti-activate
@@ -82,4 +91,5 @@ html(lang='en')
             a.nav__el.nav__el--cta(href="/signUp") Sign UP
       .body-container
         block cont
+    script(src="/socket.io/socket.io.js")
     block jslink

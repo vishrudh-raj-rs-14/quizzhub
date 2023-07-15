@@ -3,6 +3,68 @@ const Request = require("../models/requestModel");
 const User = require("../models/userModel");
 const AppError = require("../utils/appError");
 const catchAync = require("../utils/catchAync");
+const {
+  sendRequest,
+  sendResponse,
+  sendRequestNotification,
+} = require("../utils/socketConnect");
+
+function timeSince(date) {
+  let seconds = Math.floor((new Date() - date) / 1000);
+
+  let interval = seconds / 31536000;
+
+  if (interval > 1) {
+    return Math.floor(interval) + ` year${Math.floor(interval) > 1 ? "s" : ""}`;
+  }
+  interval = seconds / 2592000;
+  if (interval > 1) {
+    return (
+      Math.floor(interval) + ` month${Math.floor(interval) > 1 ? "s" : ""}`
+    );
+  }
+  interval = seconds / 86400;
+  if (interval > 1) {
+    return Math.floor(interval) + ` day${Math.floor(interval) > 1 ? "s" : ""}`;
+  }
+  interval = seconds / 3600;
+  if (interval > 1) {
+    return Math.floor(interval) + ` hour${Math.floor(interval) > 1 ? "s" : ""}`;
+  }
+  interval = seconds / 60;
+  if (interval > 1) {
+    return (
+      Math.floor(interval) + ` minute${Math.floor(interval) > 1 ? "s" : ""}`
+    );
+  }
+  return Math.floor(seconds) + ` second${Math.floor(seconds) > 1 ? "s" : ""}`;
+}
+
+notifiFrontend = catchAync(async (user, req) => {
+  let myReq;
+  if (req.user)
+    myReq = await Request.find({ $or: [{ to: user }] }).sort("-time");
+  console.log(myReq);
+  let resultReq;
+  if (req.user)
+    resultReq = await Request.find({
+      from: user,
+      status: { $in: [2, 3] },
+    }).sort("-time");
+  const marksData = await User.findById(req.user._id)
+    .select("quizesTaken")
+    .populate({
+      path: "quizesTaken",
+      populate: {
+        path: "quiz",
+      },
+    });
+  const marks = marksData.quizesTaken.filter((ele) => ele.notified != true);
+  let allReqs = [...myReq, ...resultReq, ...marks].sort(
+    (a, b) => new Date(b.time) - new Date(a.time)
+  );
+  sendRequestNotification([String(user)], allReqs);
+});
 
 exports.sendFriendRequest = catchAync(async (req, res, next) => {
   if (!req.body.to)
@@ -18,10 +80,12 @@ exports.sendFriendRequest = catchAync(async (req, res, next) => {
   });
   if (!result || result.length)
     return next(new AppError("A request has already been sent", 400));
-
+  const toUser = await User.findById(new mongoose.Types.ObjectId(req.body.to));
   data.status = 1;
   data.time = Date.now();
   const request = await Request.create(data);
+
+  await notifiFrontend(toUser._id, req);
   res.status(200).json({
     status: "success",
     request,
@@ -37,8 +101,9 @@ exports.respondToRequest = catchAync(async (req, res, next) => {
     );
   if (![1, 2, 3].includes(Number(req.body.status)))
     return next(new AppError("This status can't be found"));
+
   const document = await Request.findOne({
-    from: req.body.from,
+    from: new mongoose.Types.ObjectId(req.body.from),
     to: req.user._id,
   });
   if (!document) {
@@ -60,6 +125,8 @@ exports.respondToRequest = catchAync(async (req, res, next) => {
       $push: { friends: new mongoose.Types.ObjectId(req.body.from) },
     });
   }
+  const toUser = await User.findById(req.user._id);
+  await notifiFrontend(new mongoose.Types.ObjectId(req.body.from), req);
   res.status(200).json({
     status: "success",
     data: doc,
@@ -75,18 +142,18 @@ exports.getAllRequest = catchAync(async (req, res, next) => {
 });
 
 exports.removeRequest = catchAync(async (req, res, next) => {
-  console.log(req.body);
   if (req.body.id) {
     const id = req.body.id;
     await Request.findByIdAndDelete(id);
   } else if (req.body.to) {
-    await Request.findOneAndDelete({
+    await Request.deleteMany({
       from: req.user._id,
       to: new mongoose.Types.ObjectId(req.body.to),
     });
   } else {
     return next(new AppError("Required information is not given", 400));
   }
+  await notifiFrontend(req.body.to, req);
   res.status(200).json({
     status: "success",
   });

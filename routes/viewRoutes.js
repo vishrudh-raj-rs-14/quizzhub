@@ -12,6 +12,12 @@ router.get("/create", authController.redirect, viewController.create);
 router.get("/quiz/:id/info", authController.redirect, viewController.quizInfo);
 router.get("/quiz/:id/take", authController.redirect, viewController.quiz);
 router.get(
+  "/quiz/:id/leaderboard",
+  authController.redirect,
+  viewController.leaderboard
+);
+
+router.get(
   "/:id/profile",
   authController.redirect,
   viewController.otherProfile

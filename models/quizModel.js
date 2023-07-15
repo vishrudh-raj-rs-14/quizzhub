@@ -30,13 +30,6 @@ const questionSchema = mongoose.Schema({
     min: 1,
     validate: [Number.isInteger, "Total marks can only be an integer"],
   },
-  takenBy: [
-    {
-      user: { type: mongoose.Schema.ObjectId, ref: "User" },
-      time: { type: Date, default: Date.now() },
-      score: Number,
-    },
-  ],
 });
 
 const quiz = mongoose.Schema({
@@ -84,6 +77,7 @@ const quiz = mongoose.Schema({
       user: { type: mongoose.Schema.ObjectId, ref: "User" },
       score: Number,
       totalScore: Number,
+      time: { type: Date, default: Date.now() },
     },
   ],
   difficulty: {

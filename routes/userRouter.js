@@ -18,6 +18,8 @@ router.patch(
   userController.updateMe
 );
 
+router.patch("/notify", authController.protect, userController.notify);
+
 router.get("/", userController.getAllUsers);
 
 module.exports = router;

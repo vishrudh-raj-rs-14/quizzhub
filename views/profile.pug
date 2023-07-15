@@ -216,11 +216,11 @@ block cont
               if canEdit
                 div
                   i.fa-solid.fa-pen-to-square.fa-2x(style='color: #f5f5f5')
-                -let cond=curUser.profilePic && curUser.profilePic.startsWith("http")
-                if cond
-                    img(src=`${curUser.profilePic}`)
-                else 
-                    img(src=`/img/users/${curUser.profilePic}`)
+              -let cond=curUser.profilePic && curUser.profilePic.startsWith("http")
+              if cond
+                  img(src=`${curUser.profilePic}`)
+              else 
+                  img(src=`/img/users/${curUser.profilePic}`)
               //- img(src=`/img/users/${curUser.profilePic}`)
             else
               if canEdit

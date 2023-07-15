@@ -1,5 +1,7 @@
 import { showAlert, hideAlert } from "./alert.js";
 
+const socket = io();
+
 const signup = async (
   firstName,
   lastName,

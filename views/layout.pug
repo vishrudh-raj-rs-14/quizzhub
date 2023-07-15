@@ -152,7 +152,7 @@ block cont
                       if cond
                         img.avatar(src=`${friend.profilePic}`)
                       else 
-                        img(src=`/img/users/${friend.profilePic}`)
+                        img.avatar(src=`/img/users/${friend.profilePic}`)
                     else
                         div(style=`background-color :${friend.color} !important;`).smaller.profile=friend.firstName[0].toUpperCase()
                     span=`${friend.firstName[0].toUpperCase()}${friend.firstName.slice(1)} ${friend.lastName[0].toUpperCase()}${friend.lastName.slice(1)}`

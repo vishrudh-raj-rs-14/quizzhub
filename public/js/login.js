@@ -1,5 +1,7 @@
 import { showAlert, hideAlert } from "./alert.js";
 
+const socket = io();
+
 const urlParams = new URLSearchParams(window.location.search);
 const err = urlParams.get("e");
 if (err) {

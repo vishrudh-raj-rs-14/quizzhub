@@ -1,5 +1,8 @@
 import { showAlert, hideAlert } from "./alert.js";
 
+const socket = io();
+socket.emit("join");
+
 const urlParams = new URLSearchParams(window.location.search);
 const msg = urlParams.get("msg");
 if (msg) {
@@ -8,7 +11,6 @@ if (msg) {
 
 Array.from(document.querySelectorAll(".card-heart")).forEach((ele) =>
   ele.addEventListener("click", () => {
-    console.log(ele);
     if (ele.classList.contains("toggled")) {
       ele.innerHTML = `<img src="./img/heart2.png" />`;
       ele.classList.remove("toggled");

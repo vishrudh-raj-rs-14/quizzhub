@@ -4,6 +4,13 @@ const sharp = require("sharp");
 const multer = require("multer");
 const APIFeatures = require("../utils/apiFeatures");
 const catchAync = require("../utils/catchAync");
+const { io } = require("../app");
+const {
+  sendMark,
+  sendRequestNotification,
+  sendLeaderBoard,
+} = require("../utils/socketConnect");
+const Request = require("../models/requestModel");
 
 const multerStroage = multer.memoryStorage();
 
@@ -20,6 +27,32 @@ const multerFilter = (req, file, cb) => {
     );
   }
 };
+
+const notifiFrontend = catchAync(async (user, req) => {
+  let myReq;
+  if (req.user)
+    myReq = await Request.find({ $or: [{ to: user }] }).sort("-time");
+  console.log(myReq);
+  let resultReq;
+  if (req.user)
+    resultReq = await Request.find({
+      from: user,
+      status: { $in: [2, 3] },
+    }).sort("-time");
+  const marksData = await User.findById(req.user._id)
+    .select("quizesTaken")
+    .populate({
+      path: "quizesTaken",
+      populate: {
+        path: "quiz",
+      },
+    });
+  const marks = marksData.quizesTaken.filter((ele) => ele.notified != true);
+  let allReqs = [...myReq, ...resultReq, ...marks].sort(
+    (a, b) => new Date(b.time) - new Date(a.time)
+  );
+  sendRequestNotification([String(user)], allReqs);
+});
 
 const upload = multer({
   storage: multerStroage,
@@ -59,14 +92,12 @@ module.exports.createQuiz = catchAync(async (req, res, next) => {
   req.body.user = req.user.id;
   req.body.takenBy = [];
   let questions = JSON.parse(req.body.questions);
-  console.log(req.body.fileNames);
   if (req.body.fileNames)
     questions.forEach((ele, i) => {
       if (req.body.fileNames[i]) {
         ele.image = req.body.fileNames[i];
       }
     });
-  console.log(questions);
   const data = {
     user: req.user.id,
     name: req.body.name,
@@ -99,7 +130,10 @@ module.exports.getAllQuiz = catchAync(async (req, res, next) => {
 module.exports.evaluate = catchAync(async (req, res, next) => {
   let answers = req.body.answers;
   let quizId = req.params.id;
-  const quiz = await Quiz.findById(quizId);
+  const quiz = await Quiz.findById(quizId).populate({
+    path: "takenBy",
+    populate: { path: "user" },
+  });
   const user = await User.findById(req.user._id);
   let marks = 0;
   let totMarks = 0;
@@ -117,7 +151,6 @@ module.exports.evaluate = catchAync(async (req, res, next) => {
       totMarks += 1;
     }
   });
-  console.log(marks, totMarks);
 
   const resultQuiz = await Quiz.updateOne(
     { _id: quiz._id },
@@ -127,6 +160,7 @@ module.exports.evaluate = catchAync(async (req, res, next) => {
           user: user._id,
           score: marks,
           totalScore: totMarks,
+          time: Date.now(),
         },
       },
     }
@@ -145,7 +179,17 @@ module.exports.evaluate = catchAync(async (req, res, next) => {
       },
     }
   );
-
+  // io.emit("connection")
+  // sendMark(marks, totMarks);
+  const newQuiz = await Quiz.findById(quizId).populate({
+    path: "takenBy",
+    populate: { path: "user" },
+  });
+  newQuiz.takenBy
+    .sort((a, b) => a.time - b.time)
+    .sort((a, b) => b.score - a.score);
+  sendLeaderBoard(newQuiz);
+  await notifiFrontend(req.user._id, req);
   res.status(200).json({
     status: "success",
     marks,

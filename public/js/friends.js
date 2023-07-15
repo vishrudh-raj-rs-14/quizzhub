@@ -1,5 +1,60 @@
 import { showAlert, hideAlert } from "./alert.js";
 
+const socket = io();
+socket.on("request", (fromUser, toUser, request) => {
+  console.log("here");
+  const container = document.querySelector(".frd-list");
+  document.querySelectorAll(".frd-card").forEach((ele) => {
+    const c = ele.querySelector(".request-icons");
+    if (ele.dataset.user == String(toUser._id)) {
+      c.innerHTML = `<a href="/64929dd39a66f92a1becc255/profile"><div class="icon"><i class="fas fa-user-friends fa-lg" style="color: #fafafa"></i></div></a><div class="card-acc icon"><i class="fa-solid fa-check fa-lg" style="color:#fafafa"></i></div><div class="card-dec icon"><i class="fa-solid fa-x" style="color:#fafafa"></i></div>`;
+      ele
+        .querySelector(".request-icons")
+        .parentElement.removeChild(ele.querySelector(".request-icons"));
+      ele.append(c);
+      document.querySelectorAll(".card-acc").forEach((ele) =>
+        ele.addEventListener("click", async (e) => {
+          e.stopPropagation();
+          const id = e.target.closest(".frd-card").dataset.user;
+          const status = 2;
+          try {
+            const res = await axios.patch("/api/friend", {
+              from: id,
+              status,
+            });
+            location.reload();
+          } catch (err) {
+            showAlert("Something went wrong");
+          }
+        })
+      );
+
+      document.querySelectorAll(".card-dec").forEach((ele) =>
+        ele.addEventListener("click", async (e) => {
+          e.stopPropagation();
+          const id = e.target.closest(".frd-card").dataset.user;
+          const status = 3;
+          try {
+            const res = await axios.patch("/api/friend", {
+              from: id,
+              status,
+            });
+            location.reload();
+          } catch (err) {
+            showAlert("Something went wrong");
+          }
+        })
+      );
+    }
+  });
+});
+
+socket.on("notification", (data, user) => {
+  // const container = document.querySelector(".frd-list");
+  // container.innerHTML = "";
+  location.reload();
+});
+
 const urlParams = new URLSearchParams(window.location.search);
 const msg = urlParams.get("name");
 if (msg) {
@@ -26,7 +81,6 @@ document.querySelectorAll(".add").forEach((ele) =>
   ele.addEventListener("click", async (e) => {
     e.stopPropagation();
     const frdId = e.target.closest(".frd-card").dataset.user;
-    console.log(frdId);
     try {
       const res = await axios.post("/api/friend", {
         to: frdId,

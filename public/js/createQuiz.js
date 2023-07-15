@@ -66,20 +66,14 @@ const validateInput = function () {
   if (tagList.length >= 7) return "You cannot enter more than 7 tags";
   const questions = [];
   let questionEle = Array.from(document.querySelectorAll(".question-page"));
-  console.log(questionEle);
   for (let i = 0; i < questionEle.length; i++) {
     const quesName = questionEle[i].querySelector("#questionName").value;
     if (!quesName) return `Question ${i + 1} does not have a name`;
     const quesDesc = questionEle[i].querySelector("#questionDesc").value;
     let img = questionEle[i].querySelector(".custom-file-upload input");
-    console.log(img.files);
     if (img.files[0]) {
       imgArr.push(1);
-      console.log(img.files[0]);
       formData.append("images", img.files[0]);
-      for (const val of formData.entries()) {
-        console.log(val);
-      }
     } else {
       imgArr.push(0);
     }
@@ -363,8 +357,6 @@ plus.addEventListener("click", () => {
 const fileInp = (ele) =>
   ele.addEventListener("input", (e) => {
     let text = e.target.value.slice(12);
-    console.log(document.querySelectorAll(".file-text")[active - 1]);
-    console.log(active);
     if (text.length <= 30) {
       document.querySelectorAll(".file-text")[active - 1].textContent =
         e.target.value.slice(12);

@@ -6,6 +6,8 @@ const qs = require("qs");
 const { promisify } = require("util");
 const axios = require("axios");
 const AppError = require("../utils/appError");
+const { io } = require("../app");
+const { setUser } = require("../utils/socketConnect");
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -38,6 +40,7 @@ exports.signUp = catchAync(async (req, res, next) => {
   if (process.env.NODE_ENV == "production") {
     user.password = undefined;
   }
+
   res
     .cookie("jwt", token, {
       httpOnly: true,
@@ -66,6 +69,7 @@ exports.login = catchAync(async (req, res, next) => {
   }
 
   const token = signToken(user._id);
+
   res
     .cookie("jwt", token, {
       httpOnly: true,
@@ -253,6 +257,7 @@ exports.protect = catchAync(async (req, res, next) => {
     );
   }
   req.user = user;
+  setUser(user);
   next();
 });
 
@@ -278,6 +283,7 @@ exports.isLoggedIn = catchAync(async (req, res, next) => {
   req.isLoggedIn = true;
   res.locals.user = user;
   req.user = user;
+  setUser(user);
   next();
 });
 

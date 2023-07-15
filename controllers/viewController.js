@@ -119,7 +119,7 @@ exports.home = catchAync(async (req, res) => {
     resultReq = await Request.find({
       from: req.user._id,
       status: { $in: [2, 3] },
-    });
+    }).sort("-time");
   if (req.query.name) {
     let filter = {
       $or: [
@@ -129,6 +129,18 @@ exports.home = catchAync(async (req, res) => {
     };
     quizesquery = quizesquery.find(filter);
   }
+  const marksData = await User.findById(req.user._id)
+    .select("quizesTaken")
+    .populate({
+      path: "quizesTaken",
+      populate: {
+        path: "quiz",
+      },
+    });
+  const marks = marksData.quizesTaken.filter((ele) => ele.notified != true);
+  let allReqs = [...myReq, ...resultReq, ...marks].sort(
+    (a, b) => new Date(b.time) - new Date(a.time)
+  );
   const quizes = await quizesquery;
   res.status(200).render("home", {
     status: "success",
@@ -137,6 +149,7 @@ exports.home = catchAync(async (req, res) => {
     resultReq,
     myReq,
     name: req.query.name,
+    allReqs,
   });
 });
 
@@ -162,13 +175,28 @@ exports.friends = catchAync(async (req, res) => {
   });
   const users = await userQuery;
   const reqs = await Request.find({ from: req.user._id });
-  const idList = reqs.map((ele) => String(ele.to._id));
-  const toMeIdList = myReq.map((ele) => String(ele.from._id));
+  const idList = reqs
+    .filter((ele) => ele.status == 1)
+    .map((ele) => String(ele.to._id));
+  const toMeIdList = myReq
+    .filter((ele) => ele.status == 1)
+    .map((ele) => String(ele.from._id));
   let friendList;
   if (me.friends) {
     friendList = me.friends.map((ele) => String(ele));
   }
-  console.log(friendList);
+  const marksData = await User.findById(req.user._id)
+    .select("quizesTaken")
+    .populate({
+      path: "quizesTaken",
+      populate: {
+        path: "quiz",
+      },
+    });
+  const marks = marksData.quizesTaken.filter((ele) => ele.notified != true);
+  let allReqs = [...myReq, ...resultReq, ...marks].sort(
+    (a, b) => new Date(b.time) - new Date(a.time)
+  );
   res.render("friends", {
     users,
     reqs,
@@ -178,6 +206,7 @@ exports.friends = catchAync(async (req, res) => {
     resultReq,
     friendList,
     timeSince,
+    allReqs,
   });
 });
 
@@ -202,6 +231,18 @@ exports.profile = catchAync(async (req, res) => {
       from: req.user._id,
       status: { $in: [2, 3] },
     });
+  const marksData = await User.findById(req.user._id)
+    .select("quizesTaken")
+    .populate({
+      path: "quizesTaken",
+      populate: {
+        path: "quiz",
+      },
+    });
+  const marks = marksData.quizesTaken.filter((ele) => ele.notified != true);
+  let allReqs = [...myReq, ...resultReq, ...marks].sort(
+    (a, b) => new Date(b.time) - new Date(a.time)
+  );
   const curUser = await User.findById(req.user._id).populate({
     path: "quizesTaken",
     populate: {
@@ -217,6 +258,7 @@ exports.profile = catchAync(async (req, res) => {
     curUser,
     canEdit: true,
     timeSince,
+    allReqs,
   });
 });
 
@@ -239,6 +281,18 @@ exports.otherProfile = catchAync(async (req, res) => {
       },
     },
   });
+  const marksData = await User.findById(req.user._id)
+    .select("quizesTaken")
+    .populate({
+      path: "quizesTaken",
+      populate: {
+        path: "quiz",
+      },
+    });
+  const marks = marksData.quizesTaken.filter((ele) => ele.notified != true);
+  let allReqs = [...myReq, ...resultReq, ...marks].sort(
+    (a, b) => new Date(b.time) - new Date(a.time)
+  );
   const myQuizes = await Quiz.find({ user: myUsers._id }).find({
     $or: [
       { isPrivate: { $ne: true } },
@@ -260,6 +314,7 @@ exports.otherProfile = catchAync(async (req, res) => {
     resultReq,
     timeSince,
     canEdit,
+    allReqs,
   });
 });
 
@@ -277,6 +332,18 @@ exports.quizInfo = catchAync(async (req, res, next) => {
       from: req.user._id,
       status: { $in: [2, 3] },
     });
+  const marksData = await User.findById(req.user._id)
+    .select("quizesTaken")
+    .populate({
+      path: "quizesTaken",
+      populate: {
+        path: "quiz",
+      },
+    });
+  const marks = marksData.quizesTaken.filter((ele) => ele.notified != true);
+  let allReqs = [...myReq, ...resultReq, ...marks].sort(
+    (a, b) => new Date(b.time) - new Date(a.time)
+  );
   const quiz = await Quiz.find({
     $or: [
       { isPrivate: { $ne: true } },
@@ -288,7 +355,6 @@ exports.quizInfo = catchAync(async (req, res, next) => {
       },
     ],
   }).findOne({ _id: new mongoose.Types.ObjectId(req.params.id) });
-  console.log(quiz);
   if (!quiz || quiz.length == 0) {
     return next(
       new AppError("The quiz doesn't exist or you can't take this quiz", 404)
@@ -299,6 +365,60 @@ exports.quizInfo = catchAync(async (req, res, next) => {
     myReq,
     timeSince,
     resultReq,
+    allReqs,
+  });
+});
+
+exports.leaderboard = catchAync(async (req, res, next) => {
+  let myReq;
+  if (req.user)
+    myReq = await Request.find({ $or: [{ to: req.user._id }] }).sort("-time");
+  let resultReq;
+  if (req.user)
+    resultReq = await Request.find({
+      from: req.user._id,
+      status: { $in: [2, 3] },
+    });
+  const marksData = await User.findById(req.user._id)
+    .select("quizesTaken")
+    .populate({
+      path: "quizesTaken",
+      populate: {
+        path: "quiz",
+      },
+    });
+  const marks = marksData.quizesTaken.filter((ele) => ele.notified != true);
+  let allReqs = [...myReq, ...resultReq, ...marks].sort(
+    (a, b) => new Date(b.time) - new Date(a.time)
+  );
+  const quiz = await Quiz.find({
+    $or: [
+      { isPrivate: { $ne: true } },
+      {
+        $and: [
+          { isPrivate: true },
+          { user: { $in: [req.user._id, ...req.user.friends] } },
+        ],
+      },
+    ],
+  })
+    .findOne({ _id: new mongoose.Types.ObjectId(req.params.id) })
+    .populate({ path: "takenBy", populate: { path: "user" } });
+  if (!quiz || quiz.length == 0) {
+    return next(
+      new AppError("The quiz doesn't exist or you can't take this quiz", 404)
+    );
+  }
+  quiz.takenBy
+    .sort((a, b) => a.time - b.time)
+    .sort((a, b) => b.score - a.score);
+  res.render("leaderboard", {
+    quiz,
+    myReq,
+    timeSince,
+    resultReq,
+    allReqs,
+    timeSince,
   });
 });
 

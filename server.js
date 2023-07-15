@@ -1,7 +1,7 @@
 const dotenv = require("dotenv");
 const { default: mongoose } = require("mongoose");
 dotenv.config({ path: "./config.env" });
-const app = require("./app");
+const { app } = require("./app");
 const PORT = process.env.PORT || 5500;
 
 const DB = process.env.MONGO_CONNECTION_STRING.replace(
